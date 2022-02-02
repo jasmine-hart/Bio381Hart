@@ -9,6 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+library(prettydoc)
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+
+
 New website! :-)
 
 ## Homework Assignments  
