@@ -11,6 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [Home Page](index.html)
 
-Lets make a list!
-* Bullet 1
-* Another Bullet
+Lets make a list!  
+
+* Bullet 1  
+
+* Another Bullet  

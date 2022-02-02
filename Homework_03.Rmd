@@ -1,0 +1,59 @@
+---
+title: "Homework_03"
+author: "Jasmine Hart"
+date: "2/2/2022"
+output: html_document
+---
+
+1. 
+
+```
+FIND: \s{2,}
+REPLACE: ,
+```
+I used \s{2,} to find more than one blank space and then I replaced the multiple spaces with "," for CSV formatting.
+
+2.
+```
+FIND:(\w+), (\w+), (.+)
+REPLACE:\2 \1 (\3)
+```
+I used (\w+) to capture the first letter and the rest of the word and put the "," outside of the () to get rid of the comma. I repeated it for the second word and for the college names I used (.+) to select the rest of the line.
+
+I ordered the first two words of each line as \2 \1 and then to put word (\3) in parentheses to put them in parentheses.
+
+3.
+```
+FIND: (.mp3)
+REPLACE: \1\r
+```
+I searched for (.mp3) with a space afterwards to locate the end of the desired text and then to replace the added text I put \r to return after each song.
+
+4.
+```
+FIND: ^(\d+)(.*)(\.mp3)
+REPLACE: \2_\1\3
+```
+To grab all of the first digits I used ^(\d+), (.*) to grab the rest of the line (\.mp3) to grab the third mp3. Then I reordered them in the way they needed to.
+
+5.
+```
+FIND: (\w)\w+,(\w+),(\d+.\d+),(\d+)
+REPLACE: \1_\2,\4
+```
+I used (\w) to select the first character and the \w+ to select for the rest of the characters in the word, the "," was used to separate the words and the (\w+) was used to select all of the characters in the second word, (\d+.\d+) selects the digits and the subsequent digits after the "." and the (\d+) selects the last digit. To replace, the "_" after 1\ was added and \3 was dropped because we don't need it for what was asked of this question.
+
+6.
+```
+FIND: (\w)\w+,(\w{4})\w+,(\d+.\d+),(\d+)
+REPLACE: \1_\2,\4
+```
+
+All of the same for the previous question but the {4} was used to select only for the first 4 letters of the second word. The replace was the same.
+
+7.
+```
+FIND:(\w{3})\w+,(\w{3})\w+,(\d+.\d+),(\d+)
+REPLACE:\1\2,\4,\3
+```
+Again everything was the same as question 5 and {3} was used to select for just the first 3 letters of word one and two. The replace statment also changed the order of the last two numbers.
