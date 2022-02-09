@@ -1,0 +1,129 @@
+---
+title: "Homework_04"
+author: "Jasmine Hart"
+date: "2/9/2022"
+output: html_document
+---
+
+1.
+
+``` {r}
+x <- c(1.1) 
+
+a <- c(2.2)
+
+b <- c(3.3)
+```
+
+``` {r}
+z <- c(x, a, b)
+
+print(z)
+```
+
+a)
+``` {r}
+z <- c(x^a^b)
+
+print(z)
+```
+
+b)
+``` {r}
+z <- c((x^a)^b)
+
+print(z)
+```
+
+c)
+``` {r}
+z <- c((3*x^3) + (2*x^2) + 1)
+
+print(z)
+```
+
+2.
+
+a)
+``` {r}
+y <- c(1:8)
+y2 <- rev(1:7)
+y3 <- c(y,y2)
+
+print(y3)
+```
+
+b)
+```{r}
+w <- rep(1:5, c(1,2,3,4,5))
+w2 <- rep(1:5, 1:5)
+
+print(w)
+```
+
+c)
+``` {r}
+v <- rev(1:5)
+v2 <- rep(v, 1:5)
+
+print(v2)
+```
+
+3.
+``` {r}
+x <- runif(1)
+y <- runif(1)
+
+r <- sqrt((x)^2 + (y)^2)
+theta <- atan(y/x)
+
+```
+
+4.
+```{r}
+queue <- c("sheep", "fox", "owl", "ant")
+```
+
+a)
+```{r}
+queue2 <- append(queue, "serpent")
+```
+
+b)
+```{r}
+queue3 <- queue2[!queue2 %in% "sheep"]
+```
+
+c)
+```{r}
+queue4 <-append(queue3, "donkey", after=0)
+```
+
+d)
+```{r}
+queue5 <- queue4[!queue4 %in% "serpent"]
+```
+
+e)
+```{r}
+queue6 <- queue5[!queue5 %in% "owl"]
+```
+
+f)
+```{r}
+queue7 <- append(queue6, "aphid", after=2)
+```
+
+g)
+```{r}
+which(queue7 == "aphid")
+```
+
+5.
+```{r}
+a <- seq(1:100)
+a <- a[-which((a[]%%2==0))]
+a <- a[-which((a[]%%3==0))]
+a <- a[-which((a[]%%7==0))]
+a
+```

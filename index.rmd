@@ -9,12 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-library(prettydoc)
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-
-
 New website! :-)
 
 ## Homework Assignments  
@@ -22,4 +16,6 @@ New website! :-)
 ### Link to [HW2](Homework_02.html)
 
 ### Link to [HW3](Homework_03.html)
+
+### Link to [HW4](Homework_04.html)
 
