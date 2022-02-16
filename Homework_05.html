@@ -243,13 +243,26 @@ print(mynew)
 typeof(mynew)
 # is a character after c()</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>``` my_unis &lt;- runif(26, 0:11) my_letters &lt;- sample(LETTERS[1:26])</li>
+<li></li>
 </ol>
-<p>df &lt;- data.frame(my_unis, my_letters)</p>
-<p>df[sample(nrow(df),4),] &lt;- NA # to select for row 4 only and to replace with NAs</p>
-<p>missing &lt;- df[rowSums(is.na(df)) &gt; 0,] missing #all are NaN or NA except for a 4</p>
-<p>alphabetical &lt;- df[order(df$my_letters),] alphabetical # to make letters into alphabetical order</p>
-<p>mean(df$my_unis, na.rm=TRUE) # to give you the mean of the first column</p>
+<pre><code>my_unis &lt;- runif(26, 0:11)
+my_letters &lt;- sample(LETTERS[1:26])
+
+df &lt;- data.frame(my_unis, my_letters)
+
+df[sample(nrow(df),4),] &lt;- NA
+# to select for row 4 only and to replace with NAs
+
+missing &lt;- df[rowSums(is.na(df)) &gt; 0,]
+missing
+#all are NaN or NA except for a 4
+
+alphabetical &lt;- df[order(df$my_letters),]
+alphabetical
+# to make letters into alphabetical order
+
+mean(df$my_unis, na.rm=TRUE)
+# to give you the mean of the first column</code></pre>
 
 
 
