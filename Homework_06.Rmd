@@ -1,0 +1,237 @@
+---
+title: "Homework_06"
+author: "Jasmine Hart"
+date: "2/23/2022"
+output: html_document
+---
+
+# 1.
+
+```
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+```
+
+# Step 2 - Random data set example *
+```
+# quick and dirty, a truncated normal distribution to work on the solution set
+
+z <- rnorm(n=3000,mean=0.2)
+z <- data.frame(1:3000,z)
+names(z) <- list("ID","myVar")
+z <- z[z$myVar>0,]
+str(z)
+summary(z$myVar)
+```
+
+# Plot histogram of data
+```
+p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1)
+```
+# add empirical density curve
+```
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+```
+
+# maximum likelihood paramaeters for "normal"
+```
+normPars <- fitdistr(z$myVar,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute ex. mean
+```
+
+# Plot normal probability denisty
+```
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$myVar),len=length(z$myVar))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$myVar), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+ ```
+ 
+ # Plot exponential probability density
+ ```
+ expoPars <- fitdistr(z$myVar,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$myVar), args = list(rate=rateML))
+ p1 + stat + stat2
+ ```
+ 
+ # Plot uniform prob density
+ ```
+ stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$myVar), args = list(min=min(z$myVar), max=max(z$myVar)))
+ p1 + stat + stat2 + stat3
+ ```
+ 
+# Plot gamma probability denisty
+```
+gammaPars <- fitdistr(z$myVar,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+ ```
+ 
+ # Plot beta probability density 
+ ```
+ pSpecial <- ggplot(data=z, aes(x=myVar/(max(myVar + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$myVar/max(z$myVar + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$myVar), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+```
+
+ --------------- Own data set -----------------
+Data set from dryad. The paper is "Repeated genetic and adaptive phenotypic divergence across tidal elevation in a foundation plant species" I selected the maternal plant height at the time of seed collection. They used the offspring to evaluate height and other characteristics to better understand genetic divergence of this marsh species.
+
+# 2.
+
+```
+z <- read.table("Maternal_plants_field.csv",header=TRUE,sep=",")
+str(z)
+summary(z)
+```
+
+```
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+```
+
+# Step 2 - Random data set example *
+
+```
+# quick and dirty, a truncated normal distribution to work on the solution set
+
+z <- rnorm(n=3000,mean=0.2)
+z <- data.frame(1:3000,z)
+names(z) <- list("ID","myVar")
+z <- z[z$myVar>0,]
+str(z)
+summary(z$myVar)
+```
+
+# Plot histogram of data
+```
+p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1)
+```
+# add empirical density curve
+```
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+```
+
+# maximum likelihood paramaeters for "normal"
+```
+normPars <- fitdistr(z$myVar,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute ex. mean
+# giving mean of maternal plant height 86.6 cm
+```
+
+# Plot normal probability denisty
+```
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$myVar),len=length(z$myVar))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$myVar), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+ ```
+ 
+ # Plot exponential probability density
+ ```
+ expoPars <- fitdistr(z$myVar,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$myVar), args = list(rate=rateML))
+ p1 + stat + stat2
+ ```
+ 
+ # Plot uniform prob density
+ ```
+ stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$myVar), args = list(min=min(z$myVar), max=max(z$myVar)))
+ p1 + stat + stat2 + stat3
+ ```
+ 
+# Plot gamma probability denisty
+```
+gammaPars <- fitdistr(z$myVar,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+ ```
+ 
+ # Plot beta probability density 
+ ```
+ pSpecial <- ggplot(data=z, aes(x=myVar/(max(myVar + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$myVar/max(z$myVar + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$myVar), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+```
+
+# 3.
+
+```
+# the gamma probability density fits the data set the best 
+
+gammaPars <- fitdistr(z$myVar,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+ ```
+
+# 4.
+
+```
+# quick and dirty, a truncated normal distribution to work on the solution set
+
+y <- rnorm(n=1732,mean=0.8661687,0.62406564)
+y <- data.frame(1:1732,y)
+names(y) <- list("ID","myVar")
+y <- y[y$myVar>0,]
+str(y)
+summary(y$myVar)
+```
+
+```
+# probability denisty curve
+```
+gammaPars1 <- fitdistr(y$myVar,"gamma")
+shapeML1 <- gammaPars1$estimate["shape"]
+rateML1 <- gammaPars1$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(y$myVar), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+ ```
+ 
+ 
+# The two graphs look very similar, but the original data set has a bit more variation and the simulated dated looks a lot more uniform than the other. Which makes sense because it is a randomly generated integer sequence.
