@@ -1,0 +1,76 @@
+---
+title: "Homework 7"
+author: "Jasmine Hart"
+date: "3/2/2022"
+output: html_document
+---
+
+1.
+```
+library(tidyverse)
+data("iris")
+class(iris)
+print(iris)
+glimpse(iris)
+# 150 rows, 5 columns for the 5 variables
+```
+2. 
+```
+iris1 <- filter(iris, Species %in% c("virginica", "versicolor"), Sepal.Length > 6 , Sepal.Width > 2.5)
+print(iris1)
+```
+
+3.
+```
+iris2 <- select(iris1, Species, Sepal.Length, Sepal.Width)
+print(iris2)
+# 56 observations and 3 varaibles species, sepal length/width
+```
+
+4.
+```
+iris3 <- arrange(iris2, by=desc(Sepal.Length))
+head(iris3)
+```
+
+5.
+```
+iris4 <- mutate(iris3, Sepal.Area = Sepal.Length*Sepal.Width)
+print(iris4)
+# 4 variables and 56 observations still
+```
+
+6.
+```
+iris5 <- summarise(iris4, Mean.SL = mean(Sepal.Length), Mean.SW = mean(Sepal.Width))
+print(iris5)
+# 2 observations, width and length averages
+```
+
+7.
+```
+iris6 <- summarise(iris4, Mean.SL = mean(Sepal.Length), Mean.SW = mean(Sepal.Width), TotalN = n())
+print(iris6)
+```
+
+8.
+```
+iris6 <- iris %>%
+  filter(Species %in% c("virginica", "versicolor"), Sepal.Length > 6 , Sepal.Width > 2.5) %>%
+  select(Species, Sepal.Length, Sepal.Width) %>%
+  arrange(by=desc(Sepal.Length)) %>%
+  mutate(Sepal.Area = Sepal.Length*Sepal.Width) %>%
+  summarise(Mean.SL = mean(Sepal.Length), Mean.SW = mean(Sepal.Width), TotalN = n())
+print(iris6)
+```
+
+9.
+```
+longiris <- iris %>%
+  pivot_longer(cols=1:4,
+              names_to = "Measure",
+              values_to = "Values",
+              values_drop_na = T)
+print(longiris)
+```
+
