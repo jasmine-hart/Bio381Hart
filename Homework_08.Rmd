@@ -1,0 +1,108 @@
+---
+title: "Homework 8"
+author: "Jasmine Hart"
+date: "3/16/2022"
+output: html_document
+---
+
+```
+library(boot)
+library(tidyverse)
+```
+
+1.
+```
+Hypothesis cowpea (Vigna unguiculata) fertilized with higher rates of Nitrogen will be taller when fully mature.
+```
+
+2.
+```
+# lowN: average height = 20 cm, sd 2 based on cultivar
+# medN: average height = 30 cm, sd 3 based on cultivar 
+# highN: average height = 40 cm, sd 2 based on cultivar
+# there is more variation at the middle rate because of natural cultivar variation and possible nutrient leaching
+# there are 5 reps of 6 different cultivars in each treatment groups
+```
+
+3.
+```
+lowN <- rnorm(n=30, mean=20, sd=2)
+medN <- rnorm(n=30, mean=30, sd=3)
+highN <- rnorm(n=30, mean=40, sd=2)
+# there is more variation at the middle rate because of natural variation and possible nutrient leaching
+plantdata <- data.frame(lowN,medN,highN)
+plantdata %>%
+  group_by(lowN,medN,highN)
+  
+data <- plantdata %>%
+  pivot_longer(cols=lowN:highN,
+              names_to = "trtmnt",
+              values_to = "height",
+              values_drop_na = T)
+
+```
+
+4.
+```
+summary(aov(height~trtmnt, data=data))
+```
+
+5.
+```
+lowN1 <- rnorm(n=30, mean=20, sd=2)
+medN1 <- rnorm(n=30, mean=30, sd=3)
+highN1 <- rnorm(n=30, mean=40, sd=2)
+# there is more variation at the middle rate because of natural variation and possible nutrient leaching
+plantdata1 <- data.frame(lowN,medN,highN)
+plantdata1 %>%
+  group_by(lowN1,medN1,highN1)
+  
+data1 <- plantdata1 %>%
+  pivot_longer(cols=lowN:highN,
+              names_to = "trtmnt",
+              values_to = "height",
+              values_drop_na = T)
+summary(aov(height~trtmnt, data=data1))
+```
+
+6.
+```
+lowN <- rnorm(n=30, mean=20, sd=2)
+medN <- rnorm(n=30, mean=21, sd=3)
+highN <- rnorm(n=30, mean=22, sd=2)
+plantdata <- data.frame(lowN,medN,highN)
+plantdata %>%
+  group_by(lowN,medN,highN)
+  
+data <- plantdata %>%
+  pivot_longer(cols=lowN:highN,
+              names_to = "trtmnt",
+              values_to = "height",
+              values_drop_na = T)
+
+summary(aov(height~trtmnt, data=data))
+
+# to get a p-value of >0.05 i hadt to put all of the means between 20-22, and that resulted in a p  value of 0.076, making it in significant.
+```
+
+7.
+```
+lowN <- rnorm(n=2, mean=20, sd=2)
+medN <- rnorm(n=2, mean=30, sd=3)
+highN <- rnorm(n=2, mean=40, sd=2)
+plantdata <- data.frame(lowN,medN,highN)
+plantdata %>%
+  group_by(lowN,medN,highN)
+  
+data <- plantdata %>%
+  pivot_longer(cols=lowN:highN,
+              names_to = "trtmnt",
+              values_to = "height",
+              values_drop_na = T)
+              
+summary(aov(height~trtmnt, data=data))
+# I had to lower it to 1 observation per treatment in order to get an insignificant p-value. Even at 2 observations per treatment, the p value remains <0.05 at 0.0035, because the mean values remaining the same shows that they are different from one another and it is statistically significant.
+```
+
+
+

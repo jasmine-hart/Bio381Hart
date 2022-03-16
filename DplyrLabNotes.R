@@ -10,7 +10,7 @@
 
 ## Core Verbs
 # filter (): pic/subset observations by their values (rows)
-# arrange(): reordering rorws
+# arrange(): reordering rows
 # select(): choose variables (columns) by names
 # mutate(): creating new variables with functions of existing variable 
 # summarise() and group_by((): collapses many values down to a single summary
@@ -40,7 +40,7 @@ head(starwarsclean)
 # use >, >=, <, <=, !=, == for conditional statements
 # logical operators & | !
 
-# filter auto, exludes NAs - have to ask
+# filter auto, excludes NAs - have to ask
 
 filter(starwarsclean, gender == "masculine", height < 180)
 # commas or ampersands (&) can be used
@@ -159,4 +159,5 @@ starwars %>%
   mutate(rn = row_number()) %>%
   ungroup() %>%
   pivot_wider(names_from = homeworld,
-              values_from = name)
+              values_from = name) %>%
+  select(-rn)
