@@ -5,19 +5,23 @@ date: "3/16/2022"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r, echo=TRUE}
 library(boot)
 library(tidyverse)
 library(ggplot2)
 ```
 
 1.
-```
-Hypothesis cowpea (Vigna unguiculata) fertilized with higher rates of Nitrogen will be taller when fully mature.
+```{r, echo=TRUE}
+#Hypothesis cowpea (Vigna unguiculata) fertilized with higher rates of Nitrogen will be taller when fully mature.
 ```
 
 2.
-```
+```{r, echo=TRUE}
 # lowN: average height = 20 cm, sd 2 based on cultivar
 # medN: average height = 30 cm, sd 3 based on cultivar 
 # highN: average height = 40 cm, sd 2 based on cultivar
@@ -26,7 +30,7 @@ Hypothesis cowpea (Vigna unguiculata) fertilized with higher rates of Nitrogen w
 ```
 
 3.
-```
+```{r, echo=TRUE}
 lowN <- rnorm(n=30, mean=20, sd=2)
 medN <- rnorm(n=30, mean=30, sd=3)
 highN <- rnorm(n=30, mean=40, sd=2)
@@ -45,7 +49,7 @@ data <- plantdata %>%
 ```
 
 4.
-```
+```{r, echo=TRUE}
 library(tidyverse)
 summary(aov(height~trtmnt, data=data))
 ggplot(data, aes(x=trtmnt, y=height)) +
@@ -53,17 +57,17 @@ ggplot(data, aes(x=trtmnt, y=height)) +
 ```
 
 5.
-```
+```{r, echo=TRUE}
 lowN1 <- rnorm(n=30, mean=20, sd=2)
 medN1 <- rnorm(n=30, mean=30, sd=3)
 highN1 <- rnorm(n=30, mean=40, sd=2)
 # there is more variation at the middle rate because of natural variation and possible nutrient leaching
-plantdata1 <- data.frame(lowN,medN,highN)
+plantdata1 <- data.frame(lowN1,medN1,highN1)
 plantdata1 %>%
   group_by(lowN1,medN1,highN1)
   
 data1 <- plantdata1 %>%
-  pivot_longer(cols=lowN:highN,
+  pivot_longer(cols=lowN1:highN1,
               names_to = "trtmnt",
               values_to = "height",
               values_drop_na = T)
@@ -71,7 +75,7 @@ summary(aov(height~trtmnt, data=data1))
 ```
 
 6.
-```
+```{r, echo=TRUE}
 lowN <- rnorm(n=30, mean=20, sd=2)
 medN <- rnorm(n=30, mean=21, sd=3)
 highN <- rnorm(n=30, mean=22, sd=2)
@@ -87,11 +91,11 @@ data <- plantdata %>%
 
 summary(aov(height~trtmnt, data=data))
 
-# to get a p-value of >0.05 i hadt to put all of the means between 20-22, and that resulted in a p  value of 0.076, making it in significant.
+# to get a p-value of >0.05 i had to put all of the means between 20-22, and that resulted in a p  value of 0.076, making it in significant.
 ```
 
 7.
-```
+```{r, echo=TRUE}
 lowN <- rnorm(n=2, mean=20, sd=2)
 medN <- rnorm(n=2, mean=30, sd=3)
 highN <- rnorm(n=2, mean=40, sd=2)
