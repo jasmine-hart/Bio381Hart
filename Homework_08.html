@@ -172,7 +172,8 @@ pre code {
 
 
 <pre><code>library(boot)
-library(tidyverse)</code></pre>
+library(tidyverse)
+library(ggplot2)</code></pre>
 <ol style="list-style-type: decimal">
 <li></li>
 </ol>
@@ -201,11 +202,15 @@ data &lt;- plantdata %&gt;%
               names_to = &quot;trtmnt&quot;,
               values_to = &quot;height&quot;,
               values_drop_na = T)
+
 </code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li></li>
 </ol>
-<pre><code>summary(aov(height~trtmnt, data=data))</code></pre>
+<pre><code>library(tidyverse)
+summary(aov(height~trtmnt, data=data))
+ggplot(data, aes(x=trtmnt, y=height)) +
+  geom_point()</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li></li>
 </ol>

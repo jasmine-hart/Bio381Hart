@@ -8,6 +8,7 @@ output: html_document
 ```
 library(boot)
 library(tidyverse)
+library(ggplot2)
 ```
 
 1.
@@ -40,11 +41,15 @@ data <- plantdata %>%
               values_to = "height",
               values_drop_na = T)
 
+
 ```
 
 4.
 ```
+library(tidyverse)
 summary(aov(height~trtmnt, data=data))
+ggplot(data, aes(x=trtmnt, y=height)) +
+  geom_point()
 ```
 
 5.
