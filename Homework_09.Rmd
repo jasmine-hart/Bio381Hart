@@ -1,0 +1,41 @@
+---
+title: "Homework 9"
+author: "Jasmine Hart"
+date: "3/23/2022"
+output: html_document
+---
+
+ggplot is printing entire function output, please ignore what's not needed!
+
+
+```{r p_data}
+library(tidyverse)
+##################################################
+# FUNCTION: p_data or plant data
+# input: randomly simulated data
+# output: simulated plant height data, in a long format for analysis
+#------------------------------------------------- 
+p_data <- function(size=30, mean1=20, mean2=30, mean3=40, sd13=2,sd2=3) {
+  dataFrame <- data.frame(lowN=rnorm(size, mean=mean1,sd=sd13),
+                          medN=rnorm(size, mean=mean2, sd=sd2),
+                          highN=rnorm(size, mean=mean3, sd=sd13)) # creating the data frames
+                          
+  dataFrame <- pivot_longer(dataFrame, cols=lowN:highN,
+                            names_to = "trtmnt",
+                            values_to = "height",
+                            values_drop_na = T)
+                            # changing orientation
+  s1 <- summary(aov(height~trtmnt, data=dataFrame))
+  p1 <- ggplot(data=dataFrame, aes(x=trtmnt, y=height)) + geom_point()
+  p2 <- ggplot(data=dataFrame, aes(x=trtmnt, y=height)) + geom_boxplot()
+  return(c(dataFrame,plot(p1),s1,plot(p2)))
+}
+# plotting the graph and output, added a boxplot which shows the data better
+p_data()
+
+```
+
+
+
+
+
