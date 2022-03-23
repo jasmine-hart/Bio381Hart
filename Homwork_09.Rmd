@@ -27,8 +27,7 @@ p_data <- function(size=30, mean1=20, mean2=30, mean3=40, sd13=2,sd2=3) {
                             # changing orientation
   s1 <- summary(aov(height~trtmnt, data=dataFrame))
   p1 <- ggplot(data=dataFrame, aes(x=trtmnt, y=height)) + geom_point()
-  p2 <- ggplot(data=dataFrame, aes(x=trtmnt, y=height)) + 
-  geom_boxplot()
+  p2 <- ggplot(data=dataFrame, aes(x=trtmnt, y=height)) + geom_boxplot()
   return(c(dataFrame,plot(p1),s1,plot(p2)))
 }
 # plotting the graph and output, added a boxplot which shows the data better
