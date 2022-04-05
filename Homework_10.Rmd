@@ -1,0 +1,116 @@
+---
+title: "Homework 10"
+author: "Jasmine Hart"
+date: "3/30/2022"
+output: html_document
+---
+
+1.
+```{r}
+
+vect <- function() {
+  count1 <- sample(c(0,1), replace=TRUE, size=10)
+  counter <- 0 
+    for (i in count1) {
+     ifelse(i==0, counter<-counter+1, counter<-counter+0)
+    }
+  return(counter)
+}
+vect()
+```
+
+2.
+```{r}
+count2 <- sample(c(0,1), replace=TRUE, size=10)
+count3 <- length(which(count2==0))
+print(count3)
+```
+
+3.
+```{r}
+mat <- matrix(runif(16),
+              nrow=4,
+              ncol=4)
+print(mat)
+
+
+for (i in 1:nrow(mat)) {
+  for (j in 1:ncol(mat)) {
+    mat[i,j] <- mat[i,j] + i*j
+  } # end of column j loop
+} # end or row i loop
+print(mat)
+```
+
+4a.
+```{r}
+library(tidyverse)
+dat1 <- rnorm(n=15,mean=12,sd=1)
+dat2 <- rnorm(n=15,mean=15,sd=1)
+dat3 <- rnorm(n=15,mean=18,sd=1)
+wholedat <- data.frame(dat1,dat2,dat3)
+print(wholedat)
+
+wholedat1 <- pivot_longer(wholedat,cols=dat1:dat3, names_to="DataSet",values_to="Response")
+print(wholedat1)
+```
+
+4b.
+```{r}
+###################################
+# FUNCTION shuff_dat
+# purpose: shuffles and randomizes the response variables and calculates means for each group
+# input: created data set, wholedat1
+# output: shuffled datasets and means 
+# --------------------------------------
+shuff_dat <- function(x)  {
+  shu <- transform(x, shuffle=sample(Response))
+  
+  dat1 <- mean(shu$shuffle[shu$DataSet=="dat1"])
+  dat2 <- mean(shu$shuffle[shu$DataSet=="dat2"])
+  dat3 <- mean(shu$shuffle[shu$DataSet=="dat3"])
+  allmeans <- data.frame(dat1,dat2,dat3)
+  return(allmeans)
+}
+shuff_dat(wholedat1)
+```
+
+4c.
+```{r}
+df <- data.frame()
+rep <- c(1:100)
+
+for(i in 1:100)  {
+  meanz <- shuff_dat(wholedat1)
+  df <- rbind(df,meanz)
+}
+
+datfram <- data.frame(rep,df)
+print(datfram)
+```
+
+4d.
+```{r}
+library(ggplot2)
+library(ggpubr)
+library(reshape2)
+
+p1 <- ggplot(data=datfram)+
+  aes(x=dat1)+
+  geom_histogram(aes(fill=I("mediumorchid"),
+                     color=I("black")))
+p2 <- ggplot(data=datfram)+
+  aes(x=dat2)+
+  geom_histogram(aes(fill=I("pink"),
+                     color=I("black")))
+p3 <- ggplot(data=datfram)+
+  aes(x=dat3)+
+  geom_histogram(aes(fill=I("olivedrab4"),
+                     color=I("black")))
+
+graphx3 <- ggarrange(p1,p2,p3, nrow=1)
+
+print(graphx3)
+
+# the reshuffled means are more similar than the original unshuffled means.
+```
