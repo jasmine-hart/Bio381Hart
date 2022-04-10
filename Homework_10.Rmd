@@ -78,15 +78,16 @@ shuff_dat(wholedat1)
 4c.
 ```{r}
 df <- data.frame()
-rep <- c(1:100)
+rep <- c(1:1000)
 
-for(i in 1:100)  {
+for(i in 1:1000)  {
   meanz <- shuff_dat(wholedat1)
   df <- rbind(df,meanz)
 }
 
 datfram <- data.frame(rep,df)
 print(datfram)
+
 ```
 
 4d.
@@ -113,4 +114,131 @@ graphx3 <- ggarrange(p1,p2,p3, nrow=1)
 print(graphx3)
 
 # the reshuffled means are more similar than the original unshuffled means.
+```
+
+
+# Add slope or pvalue histogram at the end
+5.
+```{r}
+####### ###########################################
+# function: read_data
+# read in (or generate) data set for analysis
+# input: file name (or nothing, for this demo)
+# output: 3 column data frame of observed data (x,y)
+#------------------------------------------------- 
+read_data <- function(z=NULL) {
+  
+                if(is.null(z)){
+                  x_obs <- 1:20
+                  y_obs <- x_obs + 10*rnorm(20)
+                  df <- data.frame(x_obs,
+                                   y_obs)} else { 
+# set up data frame                 
+                  df <-read.table(file=z,
+                                   header=TRUE,
+                                   sep=",")}
+
+return(df)
+}
+
+get_metric <- function(z=NULL) {
+                if(is.null(z)){
+                  x_obs <- 1:20
+                  y_obs <-  x_obs + 10*rnorm(20)
+                  z <- data.frame(x_obs,y_obs)} # set up data frame                 
+. <- lm(z[,2]~z[,1])
+. <- summary(.)
+. <- .$coefficients[2,1]
+
+slope <- .
+return(slope)
+}
+
+##################################################
+# function: shuffle_data
+# randomize data for regression analysis
+# input: 2-column data frame (x_var,y_var)
+# output: 2-column data frame (x_var,y_var)
+#------------------------------------------------- 
+shuffle_data <- function(z=NULL) {
+                if(is.null(z)){
+                  x_obs <- 1:20
+                  y_obs <- x_obs + 3*rnorm(20)
+                  z <- data.frame(x_obs,y_obs)} # set up data frame                 
+z[,2] <- sample(z[,2]) # use sample function with defaults to reshuffle column
+
+return(z)
+}
+
+##################################################
+# function: get_pval
+# calculate p value from simulation
+# input: list of observed metric, and vector of simulated metrics
+# output: lower, upper tail probability values
+#------------------------------------------------- 
+get_pval <- function(z=NULL) {
+                    if(is.null(z)){
+                      z <- list(x_obs=runif(1),x_sim=runif(1000))}
+                      p_lower <- mean(z[[2]]<=z[[1]])
+                      p_upper <- mean(z[[2]]>=z[[1]])
+return(c(pl=p_lower,pu=p_upper))
+}
+
+get_pval()
+
+
+#summary(aov(Response~DataSet, data=wholedat1))
+
+##################################################
+# function: plot_ran_test
+# create ggplot of histogram of simulated values
+# input: list of observed metric and vector of simulated metrics
+# output: saved ggplot graph
+#------------------------------------------------- 
+plot_ran_test <- function(z=NULL) {
+                if(is.null(z)){
+                  z <- list(rnorm(1),rnorm(1000)) }
+df <- data.frame(ID=seq_along(z[[2]]),sim_x=z[[2]])
+
+p1 <- ggplot(data=df) + 
+       aes(x=sim_x)
+
+p1 + geom_histogram(aes(fill=I("olivedrab4"),
+                        color=I("black"))) +
+     geom_vline(aes(xintercept=z[[1]],
+               col="blue")) 
+
+}
+
+plot_ran_test1 <- function(z=NULL) {
+                if(is.null(z)){
+                  z <- list(rnorm(1),rnorm(1000)) }
+df <- data.frame(ID=seq_along(z[[2]]),sim_x=z[[2]])
+
+p1 <- ggplot(data=df) + 
+       aes(x=sim_x)
+
+p1 + geom_histogram(aes(fill=I("olivedrab4"),
+                        color=I("black")))
+
+}
+
+n_sim <- 1000
+x_sim <- rep(NA,n_sim) # vector of simulated slopes
+df <- read_data()
+x_obs <- get_metric(df)
+
+for (i in seq_len(n_sim)) {
+x_sim[i] <- get_metric(shuffle_data(df))
+}
+
+slopes <- list(x_obs,x_sim)
+get_pval(slopes)
+get_pval(datfram)
+
+plot_ran_test(slopes)
+plot_ran_test()
+plot_ran_test1(datfram)
+
+
 ```
