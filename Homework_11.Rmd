@@ -1,0 +1,56 @@
+---
+title: "Homework_11"
+author: "Jasmine Hart"
+date: "4/6/2022"
+output: html_document
+---
+
+```{r}
+
+file_builder <- function(file_n=12,
+                         file_folder="RandomFiles/",
+                         file_size=c(15,100),
+                         file_na=3){
+  for (i in seq_len(file_n)) {
+    file_length <- sample(file_size[1]:file_size[2],size=1) # get number of rows
+    var_x <- runif(file_length) # create random x
+    var_y <- runif(file_length) # create random y
+    df <- data.frame(var_x,var_y) # bind into a data frame
+    bad_vals <- dpois(x=1,lambda=file_na, log=FALSE) # determine NA number
+    df[sample(nrow(df),size=bad_vals),1] <- NA # random NA in var_x
+    df[sample(nrow(df),size=bad_vals),2] <- NA # random NA in var_y
+    
+    # create label for file name with padded zeroes
+    file_label <- paste(file_folder,
+                        "ranFile",
+                        formatC(i,
+                                width=3,
+                                format="d",
+                                flag=0),
+                        ".csv",sep="")
+    
+    # set up data file and incorporate time stamp and minimal metadata
+    write.table(cat("# Simulated random data file for batch processing","\n",
+                    "# timestamp: ",as.character(Sys.time()),"\n",
+                    "# JAH","\n",
+                    "# ------------------------", "\n",
+                    "\n",
+                    file=file_label,
+                    row.names="",
+                    col.names="",
+                    sep=""))
+    
+    # now add the data frame
+    write.table(x=df,
+                file=file_label,
+                sep=",",
+                row.names=FALSE,
+                append=TRUE)
+    
+    
+  } # end loop
+} # end file_builder
+
+file_builder()
+
+```

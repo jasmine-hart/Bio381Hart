@@ -1,0 +1,39 @@
+---
+title: "Homework 12"
+author: "Jasmine Hart"
+date: "4/13/2022"
+output: html_document
+---
+
+1. ggplot practice
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(ggmosaic)
+plant <- iris # using built in iris data
+head(plant)
+
+p1 <- ggplot(data=plant, mapping = (aes(x=Petal.Length, y=Petal.Width, fill=Petal.Length))) +
+  geom_bar(stat="identity", position="dodge")+
+  labs(title="Iris Petal Width and Length",
+       x="Petal Width + Petal Length") #,
+       #y="Petal Width")
+print(p1)
+
+p2 <- ggplot(data=plant, mapping = (aes(x=Petal.Length, y=Petal.Width, fill=Petal.Length))) +
+  geom_bar(stat="identity", position="dodge",fill="mediumvioletred")+
+  labs(title="Iris Petal Width and Length",
+       x="Petal Width + Petal Length") #,
+       #y="Petal Width")
+print(p2)
+
+p3 <- ggplot(data=plant,mapping=aes(x=Petal.Length, y=Petal.Width, color=Petal.Length)) +
+  geom_point() +
+  labs(title="Iris Petal Width and Length",
+       x="Petal Width + Petal Length",
+       y="Length (cm)",
+       color = "Width or Length")
+
+print(p3)
+ggsave(plot=p3, filename="IrisScat.png",width=10,height=10,units="cm",device="png")
+```
